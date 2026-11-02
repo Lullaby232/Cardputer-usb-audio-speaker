@@ -1,6 +1,15 @@
 MIT License
 
-Copyright (c) 2026 Lullaby232
+Copyright (c) 2026 CAM VIEW contributors
+
+This license covers the firmware source in this package
+(camview.ino) and the documentation.
+
+Bundled or referenced third-party code remains under its own terms:
+  - qrcodegen (Project Nayuki)  MIT           -> copyright notice kept in qrcodegen.c/.h
+  - M5Cardputer / M5Unified / M5GFX  MIT      -> https://github.com/m5stack
+  - JPEGDEC (Larry Bank)        Apache 2.0    -> https://github.com/bitbank2/JPEGDEC
+  - ESP32 Arduino core          LGPL 2.1      -> https://github.com/espressif/arduino-esp32
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

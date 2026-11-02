@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cardputer Speaker · M5 Cardputer ADV 免驱 USB 声卡</title>
+<style>
+  :root{
+    --bg:#f5f6f8; --card:#fff; --ink:#14181f; --sub:#5c6675; --line:#e5e8ee;
+    --blue:#0b62d6; --blue-soft:#eef5ff; --green:#0f8a5f; --green-soft:#eafaf3;
+    --amber:#b26a00; --amber-soft:#fff6e6;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Microsoft YaHei","PingFang SC","Segoe UI",system-ui,sans-serif;
+    font-size:15.5px;line-height:1.85;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 80px}
+  header{margin-bottom:34px}
+  .ver{display:inline-block;background:var(--blue-soft);color:var(--blue);
+       border-radius:999px;padding:4px 14px;font-size:12.5px;font-weight:600}
+  h1{font-size:31px;margin:14px 0 8px;letter-spacing:-.4px}
+  h1 small{font-size:15px;color:var(--sub);font-weight:400;letter-spacing:0}
+  .lead{color:var(--sub);margin:0;font-size:15.5px}
+  .metrics{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+  .metric{background:var(--card);border:1px solid var(--line);border-radius:12px;
+          padding:12px 18px;flex:1 1 150px}
+  .metric b{display:block;font-size:18px;letter-spacing:-.2px}
+  .metric span{font-size:12.5px;color:var(--sub)}
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;
+          padding:26px 30px;margin-bottom:20px}
+  h2{font-size:19px;margin:0 0 6px;letter-spacing:-.2px}
+  h2 .n{display:inline-block;min-width:26px;height:26px;line-height:26px;text-align:center;
+        background:var(--blue);color:#fff;border-radius:8px;font-size:14px;
+        margin-right:10px;vertical-align:2px}
+  .hint{color:var(--sub);font-size:14px;margin:0 0 18px}
+  ol.steps{list-style:none;padding:0;margin:0;counter-reset:s}
+  ol.steps>li{position:relative;padding:0 0 20px 46px;border-left:2px solid var(--line);
+              margin-left:14px}
+  ol.steps>li:last-child{border-left-color:transparent;padding-bottom:0}
+  ol.steps>li::before{counter-increment:s;content:counter(s);position:absolute;left:-15px;top:-2px;
+        width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;
+        font-size:13.5px;font-weight:700;text-align:center;line-height:28px}
+  ol.steps b{display:block;font-size:16px;margin-bottom:2px}
+  .muted{color:var(--sub);font-size:14.5px}
+  code{background:#f0f2f6;border-radius:6px;padding:2px 7px;
+       font:600 13.5px/1 Consolas,Menlo,monospace;color:#1d2733}
+  pre{background:#0f1620;color:#d7e3f2;border-radius:12px;padding:15px 18px;overflow:auto;
+      font:13.4px/1.85 Consolas,Menlo,monospace;margin:12px 0 0}
+  pre .c{color:#7f93ab}
+  .note{border-radius:12px;padding:13px 16px;font-size:14.3px;margin:16px 0 0;
+        border:1px solid transparent}
+  .note.warn{background:var(--amber-soft);border-color:#ffe1ab;color:#6b4400}
+  .note.ok{background:var(--green-soft);border-color:#c8eedd;color:#0a5b40}
+  .note.info{background:var(--blue-soft);border-color:#d6e6fd;color:#0a4a9e}
+  table{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:6px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--sub);font-weight:600;font-size:13px;background:#fafbfd}
+  tr:last-child td{border-bottom:none}
+  .keys{display:flex;gap:16px;flex-wrap:wrap}
+  .keys>div{flex:1 1 300px}
+  .keys h3{font-size:14px;margin:0 0 8px;color:var(--sub);font-weight:600}
+  .keys table{margin-top:0}
+  .keys td:first-child{width:120px;font:600 13.4px/1.6 Consolas,Menlo,monospace}
+  details{border:1px solid var(--line);border-radius:11px;padding:0;margin-bottom:9px;background:#fcfcfe}
+  details[open]{background:#fff}
+  summary{cursor:pointer;padding:13px 16px;font-weight:600;font-size:14.8px;list-style:none;
+          display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";color:var(--blue);font-weight:700;flex:none}
+  details[open] summary::after{content:"–"}
+  details .body{padding:0 16px 15px;color:var(--sub);font-size:14.5px}
+  details .body p{margin:0 0 8px}
+  details .body p:last-child{margin-bottom:0}
+  .tag{display:inline-block;font-size:11.5px;font-weight:700;border-radius:6px;
+       padding:1px 7px;margin-right:8px;vertical-align:1px}
+  .tag.bug{background:#ffeceb;color:#b3261e}
+  .tag.fix{background:var(--green-soft);color:var(--green)}
+  .files td:first-child{font-family:Consolas,Menlo,monospace;font-size:13.2px;color:#22303f;white-space:nowrap}
+  footer{text-align:center;color:#98a2b3;font-size:12.5px;margin-top:34px;line-height:2}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="ver">v1.5 · M5Stack Cardputer ADV</span>
+  <h1>Cardputer Speaker <small>免驱 USB 声卡</small></h1>
+  <p class="lead">插上 USB 线，Cardputer 就变成电脑的外接扬声器。不装驱动、不装软件，声音从它自己的喇叭出来。</p>
+  <div class="metrics">
+    <div class="metric"><b>免驱</b><span>USB Audio Class 2.0</span></div>
+    <div class="metric"><b>48 kHz / 16 bit</b><span>立体声</span></div>
+    <div class="metric"><b>340 ms</b><span>环形缓冲余量</span></div>
+  </div>
+</header>
+
+<section>
+  <h2><span class="n">1</span>先装固件，只需要一次</h2>
+  <p class="hint">包里已经带了编译好的整片固件，不用装任何开发环境。</p>
+  <ol class="steps">
+    <li>
+      <b>用 USB-C 数据线把 Cardputer 连到电脑</b>
+      <span class="muted">必须是能传数据的线，只能充电的线不行。</span>
+    </li>
+    <li>
+      <b>用乐鑫官方工具烧录 <code>固件\usbspk-v1.5-8MB.bin</code></b>
+      <span class="muted">工具搜「ESP32 Flash Download Tool」。设置见下表，地址填 <b>0x0</b>（不是 0x1000）。</span>
+    </li>
+    <li>
+      <b>烧完拔线，再插回去</b>
+      <span class="muted">这一步不能省。屏幕亮起显示「已连接 · 待机」就成功了。</span>
+    </li>
+  </ol>
+  <table>
+    <tr><th>Flash Download Tool 里的设置</th><th>填什么</th></tr>
+    <tr><td>ChipType / WorkMode</td><td>ESP32-S3 / Develop</td></tr>
+    <tr><td>文件 &amp; 地址</td><td><code>usbspk-v1.5-8MB.bin</code> → <code>0x0</code></td></tr>
+    <tr><td>SPI SPEED / MODE</td><td>80MHz / DIO</td></tr>
+    <tr><td>FLASH SIZE</td><td>8MB</td></tr>
+  </table>
+  <div class="note info">已装 esptool 的话，一条命令也行：</div>
+  <pre>esptool.exe --chip esp32s3 -p COM3 -b 921600 write_flash 0x0 usbspk-v1.5-8MB.bin</pre>
+  <div class="note warn">
+    <b>烧录成功 ≠ 自动启动。</b>ESP32-S3 用的是芯片内置的 USB-Serial/JTAG，没有把 RTS 接到复位脚，
+    烧完会停在下载模式。<b>必须拔插一次 USB 线</b>才会跑新固件。
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">2</span>电脑端只要做两件事</h2>
+  <ol class="steps">
+    <li>
+      <b>把输出设备切成「Cardputer Speaker」</b>
+      <span class="muted">Windows：右下角喇叭图标 → 展开输出设备列表。macOS：系统设置 → 声音 → 输出。</span>
+    </li>
+    <li>
+      <b>系统音量拉到 100%</b>
+      <span class="muted">拉满就是满幅输出，不需要留余量。觉得吵就在键盘上按 <code>-</code> 降本机音量。</span>
+    </li>
+  </ol>
+  <div class="note ok">
+    <b>第一次插上要等 2 秒。</b>固件要等缓冲攒够 30 ms 才开始出声，避免开头"咔"一声。
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">3</span>机身上的按键与屏幕</h2>
+  <div class="keys">
+    <div>
+      <h3>按键</h3>
+      <table>
+        <tr><td>- / =</td><td>本机软件音量 −/+（32 级）</td></tr>
+        <tr><td>[ / ]</td><td>模拟增益 −/+ 2dB（−6…+16dB）</td></tr>
+        <tr><td>m</td><td>静音开关</td></tr>
+        <tr><td>G0 短按</td><td>静音开关</td></tr>
+        <tr><td>G0 长按 3 秒</td><td>进入下载模式（重新烧录用）</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>屏幕</h3>
+      <table>
+        <tr><td>L / R</td><td>左右声道电平，对数刻度 −48…0 dBFS</td></tr>
+        <tr><td>□ 小方块</td><td>CLIP：真的发生数字削波才亮红</td></tr>
+        <tr><td>电脑 xx dB</td><td>电脑侧音量滑块换算值</td></tr>
+        <tr><td>DAC +6dB</td><td>ES8311 模拟增益（按 [ ] 调）</td></tr>
+        <tr><td>缓冲 xx ms</td><td>环形缓冲水位，正常在 20–60 ms</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="note info">
+    <b>为什么电平条经常是红的？</b>红只代表"到满刻度"，不代表失真。现代音乐母带峰值本来就在 −1 ~ 0 dBFS。
+    真失真要盯右边那个 CLIP 方块 —— 它亮红才是样本被截断了。
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">4</span>开发过程中遇到的问题与修复</h2>
+  <p class="hint">这一节是整份文档最值钱的部分。UAC2 + ESP32-S3 + M5Unified 的组合坑很多，以下全部是实测踩出来的。</p>
+
+  <details>
+    <summary>1. 烧录显示成功，设备却不启动</summary>
+    <div class="body">
+      <p><span class="tag bug">现象</span>esptool 报 <code>Hash of data verified</code>，设备停在 ROM 下载模式。</p>
+      <p><span class="tag fix">原因</span>用的是芯片内置 USB-Serial/JTAG，没有 RTS→EN 连线，
+      最后那句 <code>Hard resetting via RTS pin</code> 实际无效。</p>
+      <p><span class="tag fix">结论</span>硬件限制，只能物理拔插。为了省事，固件加了「长按 G0 三秒写入
+      <code>RTC_CNTL_FORCE_DOWNLOAD_BOOT</code> 再重启」的入口，重新烧录不必按住 BOOT 插线。</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>2. 编译通过，但电脑完全看不到音频设备</summary>
+    <div class="body">
+      <p><span class="tag bug">原因</span>编译参数里少了 <code>USBMode</code>，走的是硬件 CDC，
+      <b>TinyUSB 根本没被编进固件</b>。</p>
+      <p><span class="tag fix">修复</span>FQBN 必须显式带 <code>USBMode=default,CDCOnBoot=default</code>。</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>3. 描述符长度自己就对不上</summary>
+    <div class="body">
+      <p>输入终端是 <b>17 字节</b>不是 18；AudioControl 接口的 <code>bInterfaceProtocol</code> 应为
+      <b>0x20</b>（IP 协议 2.0），写 0x00 会被主机忽略。</p>
+      <p>屏幕右上角那个 <code>D:136 ok</code> 就是长度自检结果，不符会变红显示 <code>BAD</code>。</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>4. Windows 报「设备无法启动（代码 10）」——最坑的一条</summary>
+    <div class="body">
+      <p><span class="tag bug">现象</span>设备管理器黄色感叹号，错误代码 10，音频端点不注册。</p>
+      <p><span class="tag fix">排查</span>先补 IAD（无效）→ 换成 tinyusb 官方 <code>uac2_headset</code>
+      的宏整份重写描述符（仍无效）→ 最后逐字段二分，定位到 <b><code>bcdUSB = 0x0210</code></b>。</p>
+      <p><span class="tag fix">根因</span><code>bcdUSB ≥ 0x0210</code> 会让主机去读 <b>BOS 描述符</b>，
+      而 arduino-esp32 内置的 BOS 是给 CDC/WebUSB 写的，纯音频设备解析失败即判定无法启动。</p>
+      <p><span class="tag fix">修复</span>改回 <code>ucfg.usb_version = 0x0200</code>，
+      一次枚举成功，Windows 自动挂 "USB Audio 2.0" 系统驱动。</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>5. 声音小到几乎听不见（约 −42 dB）</summary>
+    <div class="body">
+      <p><span class="tag bug">根因</span>M5Unified 的音量是<b>平方曲线</b>：</p>
+      <pre>float volume = magnification * (self-&gt;_master_volume * self-&gt;_master_volume);</pre>
+      <p>初版用 <code>setVolume(32)</code> 并把 <code>magnification</code> 从 16 降到 8，
+      相当于满配置的 1/120。</p>
+      <p><span class="tag fix">修复</span>主音量恢复满量程 255、magnification 恢复 16；
+      再把 ES8311 DAC 音量（寄存器 0x32，0xBF = 0 dB）做成可调，默认 +6 dB。响度提升约 120 倍。</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>6. 屏幕一直在闪</summary>
+    <div class="body">
+      <p><span class="tag bug">原因</span>每 80 ms 把整块区域 <code>fillRect</code> 再重画文字，
+      SPI 写入不是原子的，能看出先黑一下再亮。</p>
+      <p><span class="tag fix">修复</span>所有数值区记住上次画的值，只在变化时重画；
+      一直在变的缓冲水位改成「前景色+背景色」定宽覆盖写。</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>7. 键盘只有 G0 键有反应</summary>
+    <div class="body">
+      <p><span class="tag bug">现象</span>G0 能静音（走 <code>M5.BtnA</code> 的 GPIO），
+      但 <code>-</code> <code>=</code> <code>[</code> <code>]</code> <code>m</code> 全无反应。</p>
+      <p><span class="tag fix">根因</span><code>Keyboard.updateKeysState()</code> 只解析已有的键列表，
+      <b>不会去硬件取事件</b>。ADV 的键盘是 TCA8418（I2C 扫描、中断驱动），
+      必须先 <code>updateKeyList()</code> 读事件 FIFO。</p>
+      <p><span class="tag fix">修复</span>改调 <code>M5Cardputer.update()</code>，
+      它内部 = <code>M5.update() + updateKeyList() + updateKeysState()</code>。</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>8. 长按 G0 三秒没反应</summary>
+    <div class="body">
+      <p><span class="tag bug">原因</span>靠数 loop 次数计时（<code>++g0_hold &gt; 150</code>），
+      但 loop 里刷屏让周期远大于 20 ms，实际要七八秒才触发。</p>
+      <p><span class="tag fix">修复</span>改用 <code>millis()</code> 差值判断，与循环速度解耦。</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>9. 电平条有规律地一闪一闪</summary>
+    <div class="body">
+      <p><span class="tag bug">原因</span>和屏闪同源 —— 每 80 ms 把 200 px 宽的条先刷深灰底、
+      再覆盖前景色、再重画边框，三趟 SPI 之间能看出明暗跳变。</p>
+      <p><span class="tag fix">修复</span>改<b>增量绘制</b>：记住上次宽度和颜色，变长只补新增的一小段、
+      变短只擦多出的一小段、没变就一个像素都不写。颜色加迟滞（红 0.98/0.94、黄 0.90/0.86），
+      避免阈值附近绿黄来回跳。</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>10. 状态行的字盖住了 L 电平条</summary>
+    <div class="body">
+      <p><span class="tag bug">现象</span>「已连接 · 待机 / D:136 ok」压住 L 条，还叠着模糊旧字。</p>
+      <p><span class="tag fix">根因</span>不是清屏范围太大，而是<b>上一屏残留没清</b>：开机时未连接分支在
+      y=44 / y=60 写了两行诊断文字（"等待主机枚举…"、"desc 136/136"），连上后只清了状态行，
+      那两行就永远留在屏上。</p>
+      <p><span class="tag fix">修复</span>加「脏标记」：未连接分支画完置位，已连接分支第一次进来先整块清空
+      y20–130，并把电平条/音量/dB/剪波灯的记忆值全部复位强制重画，之后才恢复轻量刷新。</p>
+      <p><b>经验</b>：局部刷新时，"上一屏残留"比"清屏范围过大"更容易被忽略 ——
+      任何切入另一套布局的分支，离开时都要把整块区域标记为脏。</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>11. 描述符写错时，屏幕上的 D 角标怎么用</summary>
+    <div class="body">
+      <p><code>AUDIO_DESC_LEN</code> 由 tinyusb 宏累加得出，<code>audio_desc_cb</code> 返回实际写入字节数。
+      两者不相等说明描述符拼错了，角标变红显示 <code>BAD</code>，省去反复插拔看设备管理器。</p>
+    </div>
+  </details>
+</section>
+
+<section>
+  <h2><span class="n">5</span>常见问题</h2>
+  <details><summary>声音设置里找不到 Cardputer Speaker</summary>
+    <div class="body"><p>先看设备管理器有没有黄色感叹号。若显示 "USB Audio 2.0" 且状态正常，
+    展开"音频输入和输出"，右键"显示已断开的设备"看看。也可能是线只能充电、没有数据线芯。</p></div>
+  </details>
+  <details><summary>声音偏小</summary>
+    <div class="body"><p>系统音量拉到 100%，再按 <code>]</code> 把 DAC 增益加到 +10 ~ +16 dB。
+    再往上就会开始失真。</p></div>
+  </details>
+  <details><summary>偶尔有咔哒声 / 爆音</summary>
+    <div class="body"><p>把系统音量降到 80–90%。输入已经是 0 dBFS 满幅时，额外的模拟增益只会削波。</p></div>
+  </details>
+  <details><summary>想改回普通 Cardputer 用途</summary>
+    <div class="body"><p>直接烧回官方固件或你自己的 sketch 即可。本固件不写 NVS、不改任何持久设置。</p></div>
+  </details>
+  <details><summary>怎么重新烧录</summary>
+    <div class="body"><p>长按 G0 三秒进入下载模式（屏幕显示"进入 USB 下载模式..."），电脑出现 COM 口后直接烧
+    <code>0x0</code>，烧完拔插一次启动。</p></div>
+  </details>
+</section>
+
+<section>
+  <h2><span class="n">6</span>文件清单与许可</h2>
+  <table class="files">
+    <tr><th>文件</th><th>说明</th></tr>
+    <tr><td>固件/usbspk-v1.5-8MB.bin</td><td>8 MB 整片固件，烧到 0x0</td></tr>
+    <tr><td>源码/usbspk/usbspk.ino</td><td>完整源码，Arduino IDE 直接打开</td></tr>
+    <tr><td>使用说明.html / .txt</td><td>本文档</td></tr>
+    <tr><td>README.md</td><td>给 GitHub / 社区看的简版说明</td></tr>
+    <tr><td>LICENSE</td><td>MIT（覆盖固件源码，不含第三方库）</td></tr>
+  </table>
+  <table>
+    <tr><th>组件</th><th>许可</th><th>来源</th></tr>
+    <tr><td>TinyUSB</td><td>MIT</td><td>github.com/hathach/tinyusb</td></tr>
+    <tr><td>M5Cardputer / M5Unified / M5GFX</td><td>MIT</td><td>github.com/m5stack</td></tr>
+    <tr><td>arduino-esp32</td><td>LGPL-2.1</td><td>github.com/espressif/arduino-esp32</td></tr>
+  </table>
+</section>
+
+<footer>
+  Cardputer Speaker v1.5 · 2026-11 · 适用于 M5Stack Cardputer ADV (ESP32-S3)<br>
+  烧录风险自负，请先确认设备型号
+</footer>
+
+</div>
+</body>
+</html>
